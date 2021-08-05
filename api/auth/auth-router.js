@@ -1,17 +1,27 @@
 const router = require('express').Router();
+const {
+  checkUsernameFree,
+  checkUsernameExists,
+  checkPasswordLength
+} = require('./auth-middleware');
 
 
- router.post('/register', (req, res, next) => {
-  res.json('register');
-});
+router.post('/register',
+  checkPasswordLength, checkUsernameFree,
+  (req, res, next) => {
+    res.json('register');
+  });
 
- router.post('/login', (req, res, next) => {
-  res.json('login');
-});
+router.post('/login',
+  checkUsernameExists,
+  (req, res, next) => {
+    res.json('login');
+  });
 
- router.get('/logout', (req, res, next) => {
-  res.json('logout');
-});
+router.get('/logout',
+  (req, res, next) => {
+    res.json('logout');
+  });
 
 
 // Require `checkUsernameFree`, `checkUsernameExists` and `checkPasswordLength`
