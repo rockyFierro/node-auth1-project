@@ -42,15 +42,17 @@ async function checkUsernameFree(req, res, next) {
   }
 */
 async function checkUsernameExists(req, res, next) {
-  try{
-    const userID = await Users.findById(req.params.id);
-    if(!userID){
+  try {
+    const usernames = await Users.findBy({ username: req.body.username });
+    if (usernames.length) {
+      next();
+    } else {
       next({
         status: 401,
-        message: 'Invalid credentials' 
-      })
+        message: 'Invalid credentials'
+      });
     }
-  }catch(err){
+  } catch (err) {
     next(err);
   }
   next();
@@ -65,7 +67,22 @@ async function checkUsernameExists(req, res, next) {
   }
 */
 function checkPasswordLength(req, res, next) {
-  next();
+  const { password } = req.body;
+  if ( !password || password.length < 3 ){
+    next({
+      status: 422,
+      message: 'Password must be longer than 3 chars'
+    });
+  } else {
+    next();
+  }
+  //get password from req.body
+//if no password err
+//if password move on
+//if password is too small err
+//if password move on
+//if either no password of password short err 422 - same message
+
 }
 
 // Don't forget to add these to the `exports` object so they can be required in other modules
