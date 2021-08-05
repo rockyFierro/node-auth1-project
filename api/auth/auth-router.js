@@ -4,12 +4,19 @@ const {
   checkUsernameExists,
   checkPasswordLength
 } = require('./auth-middleware');
-
+const Users = require('../users/users-model');
+const bcrypt = require('bcryptjs');
 
 router.post('/register',
   checkPasswordLength, checkUsernameFree,
   (req, res, next) => {
-    res.json('register');
+    const { username, password } = req.body;
+    const hash = bcrypt.hashSync( password, 8); //2^10 
+    Users.add({username, password: hash})
+    .then(user => {
+      res.status(201).json(user);
+    })
+    .catch(next);
   });
 
 router.post('/login',

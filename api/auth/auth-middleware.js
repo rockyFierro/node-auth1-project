@@ -24,13 +24,14 @@ function restricted(req, res, next) {
 async function checkUsernameFree(req, res, next) {
   try {
     const usernames = await Users.findBy({ username: req.body.username });
-    if (!usernames.length) next();
-    else {
+    if (!usernames.length) {
+      next();
+    } else {
       next({ status: 422, message: 'Username taken' });
     }
   } catch (err) {
     next(err);
-  };
+  }
 }
 
 /*
@@ -68,7 +69,7 @@ async function checkUsernameExists(req, res, next) {
 */
 function checkPasswordLength(req, res, next) {
   const { password } = req.body;
-  if ( !password || password.length < 3 ){
+  if (!password || password.length < 3) {
     next({
       status: 422,
       message: 'Password must be longer than 3 chars'
@@ -77,11 +78,11 @@ function checkPasswordLength(req, res, next) {
     next();
   }
   //get password from req.body
-//if no password err
-//if password move on
-//if password is too small err
-//if password move on
-//if either no password of password short err 422 - same message
+  //if no password err
+  //if password move on
+  //if password is too small err
+  //if password move on
+  //if either no password of password short err 422 - same message
 
 }
 
